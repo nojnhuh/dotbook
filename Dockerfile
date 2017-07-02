@@ -1,1 +1,9 @@
-FROM golang:1.8-onbuild
+FROM golang:1.8
+
+WORKDIR /go/src/app
+COPY . .
+
+RUN go-wrapper downloads
+RUN go-wrapper install
+
+CMD ["go-wrapper", "run"]
