@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	database "github.com/nojnhuh/dotbook/db"
 	"github.com/nojnhuh/dotbook/models"
 )
 
@@ -29,4 +30,5 @@ func main() {
 	db.AddDot("13", 8, 0, "3 O 1 50", "14.5 B FSL", false)
 
 	fmt.Println(db)
+	database.ExampleNewClient()
 }
