@@ -10,7 +10,7 @@ import (
 var db *models.Dotbook
 
 func main() {
-	db = models.NewDotbook("Colts 2015 1-13", models.MakeNCAAFootball(8))
+	db = models.NewDotbook("NEW Colts 2015 1-13", models.MakeNCAAFootball(8))
 	db.AddDot("1", 0, 8, "1.5 I 1 40", "2.5 B FSL", false)
 	db.AddDot("2", 32, 0, "3.75 O 1 35", "13 F FH", false)
 	db.AddDot("3", 6, 50, "3.75 O 1 35", "3.5 F FH", false)
