@@ -29,6 +29,10 @@ func main() {
 	db.AddDot("12", 8, 0, "3 O 1 50", "6 F FH", true)
 	db.AddDot("13", 8, 0, "3 O 1 50", "14.5 B FSL", false)
 
-	fmt.Println(db)
-	database.ExampleNewClient()
+	// fmt.Println(db)
+	database.DbInit()
+	defer database.DbClose()
+	database.PersistDotbook(db)
+	db2 := database.GetDotbook()
+	fmt.Println(db2)
 }
