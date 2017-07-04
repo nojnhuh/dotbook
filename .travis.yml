@@ -9,6 +9,7 @@ go:
   - master
 
 before_install:
+  - curl https://get.docker.com/ | bash
   - docker --version
   - docker-compose --version
 
