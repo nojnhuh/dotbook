@@ -9,5 +9,5 @@ services:
       - "80:8080"
   db:
     image: "mongo"
-    # volumes:
-    #   - ./dbdata:/data/db
+    volumes:
+      - ./dbdata:/data/db
