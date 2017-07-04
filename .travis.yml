@@ -16,11 +16,7 @@ script:
   - go test -v ./...
   - docker-compose build --no-cache
 
-after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-  docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-  docker-compose push;
-  fi
+after_success: ./travisci/after_success.sh
 
 
 notifications:
