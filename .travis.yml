@@ -1,6 +1,26 @@
 language: go
 
+services:
+  - docker
+
 go:
-    - 1.x
-    - 1.8
-    - master
+  - 1.x
+  - 1.8
+  - master
+
+before_install:
+  - curl https://get.docker.com/ | bash
+  - docker --version
+  - docker-compose --version
+
+script:
+  - go test -v ./...
+  - docker-compose build --no-cache
+
+after_success: ./travisci/after_success.sh
+
+
+notifications:
+  email:
+    on_success: never
+    on_failure: never

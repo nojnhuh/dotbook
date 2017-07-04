@@ -1,9 +1,15 @@
-FROM golang:1.8
+# Build stage
+FROM golang:1.8-alpine AS build-env
 
-WORKDIR /go/src/app
-COPY . .
+RUN mkdir -p /go/src/github.com/nojnhuh/dotbook
+WORKDIR /go/src/github.com/nojnhuh/dotbook
+ADD . .
+RUN apk add --no-cache git && go get -v
+RUN go install -v ./...
 
-RUN go-wrapper downloads
-RUN go-wrapper install
+# Final stage
+FROM alpine
 
-CMD ["go-wrapper", "run"]
+COPY --from=build-env /go/bin/dotbook /
+EXPOSE 8080
+ENTRYPOINT /dotbook

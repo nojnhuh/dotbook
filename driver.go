@@ -2,11 +2,19 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net/http"
 
+	database "github.com/nojnhuh/dotbook/db"
 	"github.com/nojnhuh/dotbook/models"
 )
 
 var db *models.Dotbook
+var db2 *models.Dotbook
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "%s", db2)
+}
 
 func main() {
 	db = models.NewDotbook("Colts 2015 1-13", models.MakeNCAAFootball(8))
@@ -28,5 +36,12 @@ func main() {
 	db.AddDot("12", 8, 0, "3 O 1 50", "6 F FH", true)
 	db.AddDot("13", 8, 0, "3 O 1 50", "14.5 B FSL", false)
 
-	fmt.Println(db)
+	database.DbInit()
+	defer database.DbClose()
+	database.PersistDotbook(db)
+	db2 = database.GetDotbook("Colts 2015 1-13")
+
+	http.HandleFunc("/", handler)
+	log.Println("Ready to serve HTTP")
+	http.ListenAndServe(":8080", nil)
 }
