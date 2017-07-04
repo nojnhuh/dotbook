@@ -3,13 +3,32 @@ language: go
 services:
   - docker
 
+env:
+  global:
+    - DOCKER_VERSION=17.06.0~ce-0~ubuntu
+    - DOCKER_COMPOSE_VERSION=1.14.0
+
 go:
   - 1.x
   - 1.8
   - master
 
 before_install:
-  - curl https://get.docker.com/ | bash
+
+  # Install new Docker
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get update
+  - apt-cache showpkg docker-ce
+  - sudo apt-get -y install docker-ce=${DOCKER_VERSION}
+
+  # Update docker-compose
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+  # Check versions
   - docker --version
   - docker-compose --version
 
