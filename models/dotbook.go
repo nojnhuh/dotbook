@@ -170,8 +170,8 @@ func (db *Dotbook) CrossingCounts(d *Dot) []CrossCount {
 	if d.PrevDot == nil {
 		return counts
 	}
-	prevX := d.PrevDot.Point.X()
-	thisX := d.Point.X()
+	prevX := d.PrevDot.Point.X
+	thisX := d.Point.X
 	for line, steps := range f.SideToSideLines {
 		if (prevX < steps) != (thisX <= steps) {
 			count := math.Abs((steps - prevX) / (prevX - thisX))

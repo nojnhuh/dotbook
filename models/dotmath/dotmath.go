@@ -5,7 +5,7 @@ import (
 )
 
 type Point struct {
-	x, y float64
+	X, Y float64
 }
 
 func NewPoint(x, y float64) Point {
@@ -13,20 +13,12 @@ func NewPoint(x, y float64) Point {
 	return Point{x, y}
 }
 
-func (p *Point) X() float64 {
-	return p.x
-}
-
-func (p *Point) Y() float64 {
-	return p.y
-}
-
 func AddPoints(a, b Point) Point {
-	return NewPoint(a.x+b.x, a.y+b.y)
+	return NewPoint(a.X+b.X, a.Y+b.Y)
 }
 
 func ScalarMult(a Point, s float64) Point {
-	return NewPoint(a.x*s, a.y*s)
+	return NewPoint(a.X*s, a.Y*s)
 }
 
 // inBetween calculates a float64inate that is 100*part percent of the way from
@@ -37,17 +29,17 @@ func inBetween(a, b, part float64) float64 {
 
 // pointOnPath returns a point that is 100*part percent of the way from a to b
 func PointOnPath(a, b Point, part float64) Point {
-	return Point{inBetween(a.x, b.x, part), inBetween(a.y, b.y, part)}
+	return Point{inBetween(a.X, b.X, part), inBetween(a.Y, b.Y, part)}
 }
 
 // Distance calculates the straight-line distance between two points
 func Distance(a, b Point) float64 {
-	// fmt.Printf("Distance: %.2f\n", math.Sqrt(math.Pow(a.x-b.x, 2)+math.Pow(a.y-b.y, 2)))
-	// fmt.Printf("X Distance: %.2f\n", math.Abs(a.x-b.x))
-	// fmt.Printf("Y Distance: %.2f\n", math.Abs(a.y-b.y))
-	// fmt.Printf("a.x: %.2f\n", a.x)
-	// fmt.Printf("b.x: %.2f\n", b.x)
-	return math.Sqrt(math.Pow(a.x-b.x, 2) + math.Pow(a.y-b.y, 2))
+	// fmt.Printf("Distance: %.2f\n", math.Sqrt(math.Pow(a.X-b.X, 2)+math.Pow(a.Y-b.Y, 2)))
+	// fmt.Printf("X Distance: %.2f\n", math.Abs(a.X-b.X))
+	// fmt.Printf("Y Distance: %.2f\n", math.Abs(a.Y-b.Y))
+	// fmt.Printf("a.X: %.2f\n", a.X)
+	// fmt.Printf("b.X: %.2f\n", b.X)
+	return math.Sqrt(math.Pow(a.X-b.X, 2) + math.Pow(a.Y-b.Y, 2))
 }
 
 // SegmentSize returns the size of each segment to get from a to b in segs steps
@@ -57,11 +49,11 @@ func SegmentSize(a, b Point, segs float64) float64 {
 }
 
 func BodyToFootDot(p, prev Point, counts float64) Point {
-	xDist := p.x - prev.x
-	yDist := p.y - prev.y
+	xDist := p.X - prev.X
+	yDist := p.Y - prev.Y
 	xAdjust := 2 * counts * xDist / (2*counts - 1)
 	yAdjust := 2 * counts * yDist / (2*counts - 1)
-	x := prev.x + xAdjust
-	y := prev.y + yAdjust
+	x := prev.X + xAdjust
+	y := prev.Y + yAdjust
 	return Point{x, y}
 }

@@ -40,8 +40,8 @@ func (d *Dot) String(f *fieldLayout) string {
 }
 
 func (d *Dot) coordString(f *fieldLayout) string {
-	x := d.Point.X()
-	y := d.Point.Y()
+	x := d.Point.X
+	y := d.Point.Y
 	return fmt.Sprintf("%s\n%s", numToXDotString(x, f),
 		numToYDotString(y, f))
 }
