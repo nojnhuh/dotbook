@@ -1,3 +1,4 @@
+// The web package conatins the web server
 package web
 
 import (
@@ -6,12 +7,16 @@ import (
 	"net/http"
 
 	"github.com/nojnhuh/dotbook/db"
+	// "github.com/nojnhuh/dotbook/models/modelstr"
 )
 
+// handler simply retrieves a default dotbook and displays it.
 func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "%s", db.GetDotbook("Colts 2015 1-13"))
+	book := db.GetDotbook("Colts 2015 1-13")
+	fmt.Fprintf(w, "%s", book)
 }
 
+// InitServer starts the web serve and declares handler functions
 func InitServer(port int) {
 	http.HandleFunc("/", handler)
 	log.Printf("Ready to serve HTTP on port %d", port)
