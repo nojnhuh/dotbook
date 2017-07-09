@@ -12,8 +12,8 @@ type closestLine_test struct {
 
 var closestSideToSideLine_tests = []closestLine_test{
 	// Side to Side line tests
-	{MakeNCAAFootball(8).SideToSideLines, 0, "B50"},
-	{MakeNCAAFootball(8).SideToSideLines, 4, "B50"},
+	{MakeNCAAFootball(8).SideToSideLines, 0, "50"},
+	{MakeNCAAFootball(8).SideToSideLines, 4, "B45"},
 	{MakeNCAAFootball(8).SideToSideLines, 4.1, "B45"},
 	{MakeNCAAFootball(8).SideToSideLines, 8, "B45"},
 	{MakeNCAAFootball(8).SideToSideLines, 12, "B45"},
