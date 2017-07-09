@@ -42,9 +42,9 @@ func makeFootball(stepsPerFiveYards float64, yardsBetweenLines float64,
 	midLine := 50.
 	width := midLine / 2.5 * stepsPerFiveYards
 
-	// sideToSideLines := make([]lineNumPair, int(midLine)*2/int(yardsBetweenLines)+1)
 	sideToSideLines := make(map[string]float64)
-	for line := int(midLine); line >= 0; line -= 5 {
+	sideToSideLines["50"] = 0
+	for line := int(midLine) - 5; line >= 0; line -= 5 {
 		steps := (midLine - float64(line)) * stepsPerFiveYards / yardsBetweenLines
 		sideToSideLines["A"+strconv.Itoa(line)] = -1 * steps
 		sideToSideLines["B"+strconv.Itoa(line)] = steps

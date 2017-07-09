@@ -28,6 +28,8 @@ func NewPoint(x, y float64) Point {
 	return Point{x, y}
 }
 
+// equal tests two Points for equality
+
 // AddPoints adds together 2 points like vectors.
 func AddPoints(a, b Point) Point {
 	return NewPoint(a.X+b.X, a.Y+b.Y)
@@ -56,6 +58,9 @@ func Distance(a, b Point) float64 {
 
 // SegmentSize returns the size of each segment to get from a to b in segs steps.
 func SegmentSize(a, b Point, segs float64) float64 {
+	if segs == 0 {
+		return 0
+	}
 	return Distance(a, b) / segs
 }
 
@@ -76,18 +81,16 @@ func CrossingCounts(p, prev Point, lines map[string]float64) []CrossCount {
 	counts := []CrossCount{}
 	thisX := p.X
 	prevX := prev.X
+	if thisX == prevX {
+		return counts
+	}
 	for line, steps := range lines {
 		if (prevX < steps) != (thisX <= steps) {
 			when := math.Abs((steps - prevX) / (prevX - thisX))
-			counts = append(counts,
-				CrossCount{line, when})
+			counts = append(counts, CrossCount{line, when})
+		} else if thisX == steps {
+			counts = append(counts, CrossCount{line, 1})
 		}
-		// steps *= -1
-		// if (prevX < steps) != (thisX <= steps) && steps != 0 {
-		// 	count := math.Abs((steps - prevX) / (prevX - thisX))
-		// 	counts = append(counts,
-		// 		CrossCount{line, count * d.MoveCounts})
-		// }
 	}
 
 	sort.Slice(counts[:], func(i, j int) bool {
