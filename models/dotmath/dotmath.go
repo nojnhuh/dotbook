@@ -1,4 +1,4 @@
-// The dotmath package handles the math behind calculating characteristics of
+// Package dotmath handles the math behind calculating characteristics of
 // dots
 package dotmath
 
@@ -14,7 +14,7 @@ type Point struct {
 	X, Y float64
 }
 
-// Data returned from CrossingCounts method
+// CrossCount represents data returned from CrossingCounts method
 // Line: Name of the line crossed
 // Side: Side of the field the line is on
 // Count: The count on which the line is crossed
@@ -23,12 +23,19 @@ type CrossCount struct {
 	Count float64
 }
 
+// CrossCounts is an array of CrossCount objects with a special sorting
+// implementation
+type CrossCounts []CrossCount
+
 // NewPoint creates a new Cartesian coordinate from the provided x and y values.
 func NewPoint(x, y float64) Point {
 	return Point{x, y}
 }
 
-// equal tests two Points for equality
+// Equal tests two Points for equality
+func Equal(a, b Point) bool {
+	return a.X == b.X && a.Y == b.Y
+}
 
 // AddPoints adds together 2 points like vectors.
 func AddPoints(a, b Point) Point {
@@ -46,7 +53,7 @@ func inBetween(a, b, part float64) float64 {
 	return a + (b-a)*part
 }
 
-// pointOnPath returns a point that is 100*part percent of the way from a to b.
+// PointOnPath returns a point that is 100*part percent of the way from a to b.
 func PointOnPath(a, b Point, part float64) Point {
 	return NewPoint(inBetween(a.X, b.X, part), inBetween(a.Y, b.Y, part))
 }
@@ -97,4 +104,43 @@ func CrossingCounts(p, prev Point, lines map[string]float64) []CrossCount {
 		return counts[i].Count < counts[j].Count
 	})
 	return counts
+}
+
+func crossCountEqual(c1, c2 CrossCount) bool {
+	return c1.Line == c2.Line && c1.Count == c2.Count
+}
+
+func (slice CrossCounts) Len() int {
+	return len(slice)
+}
+
+func (slice CrossCounts) Less(i, j int) bool {
+	return slice[i].Line < slice[j].Line
+}
+
+func (slice CrossCounts) Swap(i, j int) {
+	slice[i], slice[j] = slice[j], slice[i]
+}
+
+// CrossCountSliceEqual determines if two slices of CrossCount objects are equal
+func CrossCountSliceEqual(a, b CrossCounts) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil || b == nil {
+		return false
+	}
+	if len(a) != len(b) {
+		return false
+	}
+
+	sort.Sort(a)
+	sort.Sort(b)
+
+	for i := range a {
+		if !crossCountEqual(a[i], b[i]) {
+			return false
+		}
+	}
+	return true
 }

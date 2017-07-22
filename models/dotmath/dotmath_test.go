@@ -6,7 +6,7 @@ import (
 )
 
 func TestEqual(t *testing.T) {
-	var equalTests = []struct {
+	var EqualTests = []struct {
 		a, b     Point
 		expected bool
 	}{
@@ -19,17 +19,13 @@ func TestEqual(t *testing.T) {
 		{Point{math.MaxFloat64, math.MaxFloat64}, Point{math.MaxFloat64, math.MaxFloat64}, true},
 	}
 
-	for _, test := range equalTests {
-		v := equal(test.a, test.b)
+	for _, test := range EqualTests {
+		v := Equal(test.a, test.b)
 		if v != test.expected {
 			t.Errorf("For points %v and %v, expected %v, got %v", test.a, test.b,
 				test.expected, v)
 		}
 	}
-}
-
-func equal(a, b Point) bool {
-	return a.X == b.X && a.Y == b.Y
 }
 
 func TestNewPoint(t *testing.T) {
@@ -46,7 +42,7 @@ func TestNewPoint(t *testing.T) {
 
 	for _, test := range newPointTests {
 		v := NewPoint(test.x, test.y)
-		if !equal(v, test.expected) {
+		if !Equal(v, test.expected) {
 			t.Errorf("For coordinates X = %f and Y = %f, expected %v, got %v",
 				test.x, test.y, test.expected, v)
 		}
@@ -71,9 +67,8 @@ func TestAddPoints(t *testing.T) {
 
 	for _, test := range addPointTests {
 		v := AddPoints(test.a, test.b)
-		if !equal(v, test.expected) {
-			t.Errorf("For point %v plus %v, expected %v, got %v", test.a, test.b,
-				test.expected, v)
+		if !Equal(v, test.expected) {
+			t.Errorf("For point %v plus %v, expected %v, got %v", test.a, test.b, test.expected, v)
 		}
 	}
 }
@@ -101,7 +96,7 @@ func TestScalarMult(t *testing.T) {
 
 	for _, test := range scalarMultTests {
 		v := ScalarMult(test.point, test.s)
-		if !equal(v, test.expected) {
+		if !Equal(v, test.expected) {
 			t.Errorf("For point %v multiplied by %f, expected %v, got %v",
 				test.point, test.s, test.expected, v)
 		}
@@ -128,7 +123,7 @@ func TestInBetween(t *testing.T) {
 	for _, test := range inBetweenTests {
 		v := inBetween(test.a, test.b, test.part)
 		if v != test.expected {
-			t.Errorf("For %v with part %v, expected %v, got %v", test.a, test.b,
+			t.Errorf("For %v and %v with part %v, expected %v, got %v", test.a, test.b,
 				test.part, test.expected, v)
 		}
 	}
@@ -167,7 +162,7 @@ func TestPointOnPath(t *testing.T) {
 
 	for _, test := range pointOnPathTests {
 		v := PointOnPath(test.a, test.b, test.part)
-		if !equal(v, test.expected) {
+		if !Equal(v, test.expected) {
 			t.Errorf("For points %v and %v with part %f, expected %v, got %v",
 				test.a, test.b, test.part, test.expected, v)
 		}
@@ -250,32 +245,10 @@ func TestBodyToFoot(t *testing.T) {
 
 	for _, test := range bodyToFootTests {
 		v := BodyToFootDot(test.to, test.from, test.counts)
-		if !equal(v, test.expected) {
+		if !Equal(v, test.expected) {
 			t.Errorf("From %v to %v in %.0f counts, expected %v, got %v", test.from, test.to, test.counts, test.expected, v)
 		}
 	}
-}
-
-func crossCountEqual(c1, c2 CrossCount) bool {
-	return c1.Line == c2.Line && c1.Count == c2.Count
-}
-
-func crossCountSliceEqual(a, b []CrossCount) bool {
-	if a == nil && b == nil {
-		return true
-	}
-	if a == nil || b == nil {
-		return false
-	}
-	if len(a) != len(b) {
-		return false
-	}
-	for i := range a {
-		if !crossCountEqual(a[i], b[i]) {
-			return false
-		}
-	}
-	return true
 }
 
 func TestCrossingCounts(t *testing.T) {
@@ -288,34 +261,34 @@ func TestCrossingCounts(t *testing.T) {
 	}
 	var crossingCountTests = []struct {
 		from, to Point
-		expected []CrossCount
+		expected CrossCounts
 	}{
-		{Point{0, 0}, Point{0, 0}, []CrossCount{}},
-		{Point{0, -16}, Point{0, 16}, []CrossCount{}},
-		{Point{-16, 0}, Point{16, 0}, []CrossCount{
+		{Point{0, 0}, Point{0, 0}, CrossCounts{}},
+		{Point{0, -16}, Point{0, 16}, CrossCounts{}},
+		{Point{-16, 0}, Point{16, 0}, CrossCounts{
 			{"A45", 0.25},
 			{"50", 0.5},
 			{"B45", 0.75},
 			{"B40", 1},
 		}},
-		{Point{0, 0}, Point{8, 0}, []CrossCount{
+		{Point{0, 0}, Point{8, 0}, CrossCounts{
 			{"B45", 1},
 		}},
-		{Point{2, 0}, Point{6, 0}, []CrossCount{}},
-		{Point{-1, 0}, Point{1, 0}, []CrossCount{
+		{Point{2, 0}, Point{6, 0}, CrossCounts{}},
+		{Point{-1, 0}, Point{1, 0}, CrossCounts{
 			{"50", 0.5},
 		}},
-		{Point{-1, 1}, Point{1, 1}, []CrossCount{
+		{Point{-1, 1}, Point{1, 1}, CrossCounts{
 			{"50", 0.5},
 		}},
-		{Point{-1, -9.6456}, Point{1, 4534}, []CrossCount{
+		{Point{-1, -9.6456}, Point{1, 4534}, CrossCounts{
 			{"50", 0.5},
 		}},
 	}
 
 	for _, test := range crossingCountTests {
 		v := CrossingCounts(test.to, test.from, lines)
-		if !crossCountSliceEqual(v, test.expected) {
+		if !CrossCountSliceEqual(v, test.expected) {
 			t.Errorf("From %v to %v with lines %v, expected %v, got %v", test.from,
 				test.to, lines, test.expected, v)
 		}

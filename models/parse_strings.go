@@ -1,65 +1,65 @@
 package models
 
 import (
-	"log"
+	"fmt"
 	"strconv"
 	"strings"
 )
 
-// Converts a string to an Point coordinate.
+// parseXDot converts a string to an Point coordinate.
 // steps: Any integer or float input is acceptable
 // insideOrOutside: Inside is "I", Outside is "O"
-// yardline: Must be a valid yardline for the given fieldLayout
-func parseXDot(s string, f *fieldLayout) float64 {
+// yardline: Must be a valid yardline for the given FieldLayout
+func parseXDot(s string, f *FieldLayout) (float64, error) {
 	list := strings.Split(s, " ")
 
 	steps, err := strconv.ParseFloat(list[0], 64)
 	if err != nil {
-		log.Fatal(err)
+		return 0, err
 	}
 
 	line := list[2]
 	var x float64
 	var ok bool
 	if x, ok = f.SideToSideLines[line]; !ok {
-		log.Fatal("Illegal line:", line)
+		return 0, fmt.Errorf("Illegal line: %s", line)
 	}
 
 	var sign float64
-	switch LineSide(line) {
-	case Left:
+	switch line[0] {
+	case 'A':
 		sign = -1
-	case Right:
+	case 'B':
 		sign = 1
 	}
 
-	var in_out_sign float64
+	var inOutSign float64
 	if x != 0 {
 		switch list[1] {
 		case "I":
-			in_out_sign = -1 * sign
+			inOutSign = -1 * sign
 		case "O":
-			in_out_sign = sign
+			inOutSign = sign
 		default:
-			log.Fatal("Illegal side:", list[1])
+			return 0, fmt.Errorf("Illegal side: %s", list[1])
 		}
 	} else {
-		in_out_sign = sign
+		inOutSign = sign
 	}
 
-	return x + in_out_sign*steps
+	return x + inOutSign*steps, nil
 }
 
-// Converts a string to a yDot.
+// parseYDot converts a string to a yDot.
 // steps: Any integer or float input is acceptable
 // FrontOrBehind: Front is "F", Behind is "B"
-// line: Must be a valid line for the given fieldLayout
-func parseYDot(s string, f *fieldLayout) float64 {
+// line: Must be a valid line for the given FieldLayout
+func parseYDot(s string, f *FieldLayout) (float64, error) {
 	list := strings.Split(s, " ")
 
 	steps, err := strconv.ParseFloat(list[0], 64)
 	if err != nil {
-		log.Fatal(err)
+		return 0, err
 	}
 
 	FrontOrBehind := list[1]
@@ -67,16 +67,15 @@ func parseYDot(s string, f *fieldLayout) float64 {
 	if FrontOrBehind == "F" {
 		sign = -1
 	} else if FrontOrBehind != "B" {
-		log.Fatalf("Illegal: %s", FrontOrBehind)
+		return 0, fmt.Errorf("Illegal: %s", FrontOrBehind)
 	}
 
 	line := list[2]
 	var y float64
 	var ok bool
 	if y, ok = f.FrontToBackLines[line]; !ok {
-		log.Fatalf("Illegal line %s", line)
+		return 0, fmt.Errorf("Illegal line %s", line)
 	}
 
-	return sign*steps + y
-
+	return sign*steps + y, nil
 }

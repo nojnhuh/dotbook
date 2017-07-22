@@ -36,9 +36,6 @@ script:
   - go test -v ./...
   - docker-compose build --no-cache
 
-after_success: ./travisci/after_success.sh
-
-
 notifications:
   email:
     on_success: never

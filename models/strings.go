@@ -8,7 +8,7 @@ import (
 var (
 	roundStepsToNearest    = 0.25
 	roundStepSizeToNearest = 0.1
-	countSubdivisions      = []string{"", "e", "+", "a"}
+	countSubdivisions      = []string{"", "e", "&", "a"}
 )
 
 func (db *Dotbook) String() string {
@@ -16,7 +16,7 @@ func (db *Dotbook) String() string {
 	for _, d := range db.Dots {
 		s += fmt.Sprintln(d.String(db.Field))
 		if d.PrevDot != nil {
-			s += fmt.Sprintf("Step size = %.1f to 5\n",
+			s += fmt.Sprintf("Step size: %.1f to 5\n",
 				roundToNearest(d.StepSize(db.Field), roundStepSizeToNearest))
 		}
 		for _, cross := range d.CrossingCounts(db.Field) {
@@ -33,8 +33,12 @@ func (db *Dotbook) String() string {
 		}
 		if d.PrevDot != nil {
 			s += fmt.Sprintf("Midset: %.0f counts\n", d.MoveCounts/2)
-			mid := d.DotOnCount(d.MoveCounts / 2)
-			s += fmt.Sprintln(mid.coordString(db.Field))
+			mid, err := d.DotOnCount(d.MoveCounts / 2)
+			if err != nil {
+				s += "Error calculating midset\n"
+			} else {
+				s += fmt.Sprintln(mid.coordString(db.Field))
+			}
 			if d.BodyCenter {
 				s += fmt.Sprintf("Foot dot:\n")
 				foot := d.bodyToFootDot()
@@ -46,7 +50,7 @@ func (db *Dotbook) String() string {
 	return s
 }
 
-func (d *Dot) String(f *fieldLayout) string {
+func (d *Dot) String(f *FieldLayout) string {
 	s := fmt.Sprintf("Set %s\n%.0f counts\nhold %.0f\n%s", d.Name, d.MoveCounts,
 		d.HoldCounts, d.coordString(f))
 	if d.BodyCenter {
@@ -56,20 +60,20 @@ func (d *Dot) String(f *fieldLayout) string {
 }
 
 // coordString constructs a string from a Point in dot notation.
-func (d *Dot) coordString(f *fieldLayout) string {
+func (d *Dot) coordString(f *FieldLayout) string {
 	x := d.Point.X
 	y := d.Point.Y
 	return fmt.Sprintf("%s\n%s", numToXDotString(x, f),
 		numToYDotString(y, f))
 }
 
-func (f *fieldLayout) String() string {
+func (f *FieldLayout) String() string {
 	return fmt.Sprintf("<Field w: %.3g, h: %.2g>", f.Width, f.Height)
 }
 
 // Converts a Cartesian coordinate back to an xDot string using the same
 // coordinate system as dotToNum.
-func numToXDotString(n float64, f *fieldLayout) string {
+func numToXDotString(n float64, f *FieldLayout) string {
 
 	line := closestLine(f.SideToSideLines, n)
 
@@ -79,13 +83,13 @@ func numToXDotString(n float64, f *fieldLayout) string {
 		insideOrOutside = "O"
 		steps = math.Abs(n) - f.Width/2
 	} else {
-		if math.Mod(math.Abs(n), f.StepsPerFiveYards) >= f.StepsPerFiveYards/2 {
+		if math.Mod(math.Abs(n), f.StepsBetweenLines) >= f.StepsBetweenLines/2 {
 			insideOrOutside = "I"
-			steps = f.StepsPerFiveYards - math.Mod(math.Abs(n),
-				f.StepsPerFiveYards)
+			steps = f.StepsBetweenLines - math.Mod(math.Abs(n),
+				f.StepsBetweenLines)
 		} else {
 			insideOrOutside = "O"
-			steps = math.Mod(math.Abs(n), f.StepsPerFiveYards/2)
+			steps = math.Mod(math.Abs(n), f.StepsBetweenLines/2)
 		}
 	}
 
@@ -96,7 +100,7 @@ func numToXDotString(n float64, f *fieldLayout) string {
 
 // Converts a Cartesian coordinate back to a yDot string using the same
 // coordinate system as dotToNum.
-func numToYDotString(n float64, f *fieldLayout) string {
+func numToYDotString(n float64, f *FieldLayout) string {
 	line := closestLine(f.FrontToBackLines, n)
 	steps := n - f.FrontToBackLines[line]
 

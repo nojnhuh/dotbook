@@ -1,5 +1,5 @@
 /dotbook
-/dbdata/
+/.dbdata/
 
 # Binaries for programs and plugins
 *.exe

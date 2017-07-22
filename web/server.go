@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/nojnhuh/dotbook/db"
-	// "github.com/nojnhuh/dotbook/models/modelstr"
 )
 
 // handler simply retrieves a default dotbook and displays it.
