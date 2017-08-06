@@ -7,7 +7,7 @@ WORKDIR /go/src/github.com/nojnhuh/dotbook
 EXPOSE 8080
 COPY . .
 RUN go get -v
-RUN go install $(go list ./... | grep -v /vendor/)
+RUN go install ./...
 ENTRYPOINT dotbook
 
 
