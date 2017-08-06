@@ -40,7 +40,7 @@ func (d *Dot) equals(d2 *Dot) bool {
 }
 
 // bodyToFootDot converts a foot dot to a body-center dot.
-func (d *Dot) bodyToFootDot() *Dot {
+func (d *Dot) BodyToFootDot() *Dot {
 	if d.BodyCenter {
 		dot := *d
 		if dot.PrevDot == nil {
@@ -63,8 +63,8 @@ func (d *Dot) DotOnCount(count float64) (*Dot, error) {
 		return d, nil
 	}
 	t := count / d.MoveCounts
-	dFoot := d.bodyToFootDot()
-	prevFoot := d.PrevDot.bodyToFootDot()
+	dFoot := d.BodyToFootDot()
+	prevFoot := d.PrevDot.BodyToFootDot()
 	midPoint := dotmath.ScalarMult(dotmath.AddPoints(dFoot.Point, prevFoot.Point), t)
 	mid := &Dot{d.Name, count, 0, midPoint, false, d}
 	return mid, nil
@@ -75,8 +75,8 @@ func (d *Dot) Distance() float64 {
 	if d.PrevDot == nil {
 		return 0
 	}
-	dFoot := d.bodyToFootDot()
-	prevFoot := d.PrevDot.bodyToFootDot()
+	dFoot := d.BodyToFootDot()
+	prevFoot := d.PrevDot.BodyToFootDot()
 	return dotmath.Distance(dFoot.Point, prevFoot.Point)
 }
 
@@ -86,8 +86,8 @@ func (d *Dot) StepSize(f *FieldLayout) float64 {
 	if d.PrevDot == nil {
 		return 0
 	}
-	dFoot := d.bodyToFootDot()
-	prevFoot := d.PrevDot.bodyToFootDot()
+	dFoot := d.BodyToFootDot()
+	prevFoot := d.PrevDot.BodyToFootDot()
 	segSize := dotmath.SegmentSize(dFoot.Point, prevFoot.Point, d.MoveCounts)
 	if segSize != 0 {
 		return f.StepsBetweenLines / segSize

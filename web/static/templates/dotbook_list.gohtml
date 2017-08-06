@@ -1,0 +1,7 @@
+{{define "body"}}
+	{{range .}}
+		<a href="/dotbook?q={{.Name | urlquery}}">{{.Name}}</p>
+	{{else}}
+		<p>No Dotbooks found</p>
+	{{end}}
+{{end}}

@@ -89,7 +89,7 @@ func TestBodyToFootDot(t *testing.T) {
 	}
 
 	for _, test := range bodyToFootDotTests {
-		v := test.dest.bodyToFootDot()
+		v := test.dest.BodyToFootDot()
 		if !v.equals(test.expected) {
 			t.Errorf("From %v to %v, expected %v, got %v", test.dest.PrevDot,
 				test.dest, test.expected, v)

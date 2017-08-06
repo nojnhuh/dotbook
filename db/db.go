@@ -1,4 +1,4 @@
-// The db package is a wrapper around the mgo package the app uses to
+// Package db is a wrapper around the mgo package the app uses to
 // communicate with the MongoDB database.
 package db
 

@@ -6,7 +6,7 @@ import (
 
 // PersistDotbook stores a Dotbook object in the database.
 func PersistDotbook(db *models.Dotbook) {
-	c := session.DB("test").C("dotbooks")
+	c := session.DB("dotbook").C("dotbooks")
 	err := c.Insert(db)
 	if err != nil {
 		panic(err)

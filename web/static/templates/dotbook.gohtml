@@ -1,0 +1,39 @@
+{{define "body"}}
+	<h2>{{.Name}}</h2>
+	{{range .Dots}}
+	<div class="dot">
+		<h3>Set {{.Name}}</h3>
+		{{if .MoveCounts}}
+		<p>Move {{.MoveCounts}}</p>
+		{{end}}
+		{{if .HoldCounts}}
+		<p>Hold {{.HoldCounts}}</p>
+		{{end}}
+		<p>{{.NumToXDotString $.Field}}</p>
+		<p>{{.NumToYDotString $.Field}}</p>
+		{{if .BodyCenter}}
+		<p>Body-Center</p>
+		{{end}}
+		{{$stepSize := .StepSize $.Field}}
+		{{if $stepSize}}
+		<p>Step size: {{$stepSize | printf "%.1f"}} to 5</p>
+		{{end}}
+		{{range .CrossCountStrings $.Field}}
+		<p>{{.}}</p>
+		{{end}}
+		{{if .BodyCenter}}
+		<p>Foot Dot:</p>
+		<p>{{.BodyToFootDot.NumToXDotString $.Field}}</p>
+		<p>{{.BodyToFootDot.NumToYDotString $.Field}}</p>
+		{{end}}
+		{{if .PrevDot}}
+		{{$mid := half .MoveCounts}}
+		<p>Midset: {{$mid | printf "%.2g"}} counts</p>
+		<p>{{(.DotOnCount $mid).NumToXDotString $.Field}}</p>
+		<p>{{(.DotOnCount $mid).NumToYDotString $.Field}}</p>
+		{{end}}
+	</div>
+	{{else}}
+	<p>No dots to show</p>
+	{{end}}
+{{end}}
