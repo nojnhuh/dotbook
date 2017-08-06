@@ -5,8 +5,9 @@ RUN apk add --no-cache git
 RUN mkdir -p /go/src/github.com/nojnhuh/dotbook
 WORKDIR /go/src/github.com/nojnhuh/dotbook
 EXPOSE 8080
-ADD . .
-RUN go get -v && go install -v ./...
+COPY . .
+RUN go get -v
+RUN go install $(go list ./... | grep -v /vendor/)
 ENTRYPOINT dotbook
 
 
@@ -14,6 +15,7 @@ ENTRYPOINT dotbook
 # # Final stage
 # FROM alpine
 
-# COPY --from=build-env /go/bin/dotbook /
 # EXPOSE 8080
+# COPY --from=build-env /go/bin/dotbook /
+# COPY web/ /
 # ENTRYPOINT /dotbook

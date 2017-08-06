@@ -15,7 +15,6 @@ var (
 	tmplDotbookList *template.Template
 )
 
-// handler simply retrieves a default dotbook and displays it.
 func dotbookHandler(w http.ResponseWriter, r *http.Request) {
 	dbName := r.URL.Query()["q"][0]
 	book := db.GetDotbook(dbName)
