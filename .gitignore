@@ -1,6 +1,9 @@
 /dotbook
 /.dbdata/
 
+/server.key
+/server.cert
+
 # Binaries for programs and plugins
 *.exe
 *.dll

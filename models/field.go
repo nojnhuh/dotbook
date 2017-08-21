@@ -21,20 +21,21 @@ const (
 // Defines the coordinate grid for a football field or indoor floor.
 // Units of the grid are "steps" in the "x to 5" format.
 // Usually, an 8 to 5 (22.5 in) step is used, but anything can be used here.
-//
-// Members:
-// StepsBetweenLines: Scale used for the size of one step. A value of
-// 		8 = 22.5in. step.
-// Width: Total field width in steps.
-// SideToSideLines: Map of vertical line names to steps from middle.
-// Height: Total field height in steps.
-// FrontToBackLines: Map of horizonal line names to steps from front.
 type FieldLayout struct {
-	StepsBetweenLines float64
-	Width             float64
-	SideToSideLines   map[string]float64
-	Height            float64
-	FrontToBackLines  map[string]float64
+	// Scale used for the size of one step. A value of 8 = 22.5in. step.
+	StepsBetweenLines float64 `json:"stepsBetweenLines"`
+
+	// Total field width in steps.
+	Width float64 `json:"width"`
+
+	// Map of vertical line names to steps from middle.
+	SideToSideLines map[string]float64 `json:"sideToSideLines"`
+
+	// Total field height in steps.
+	Height float64 `json:"height"`
+
+	// Map of horizonal line names to steps from front.
+	FrontToBackLines map[string]float64 `json:"frontToBackLines"`
 }
 
 // makeFootball creates a FieldLayout for a standard football field.

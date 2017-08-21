@@ -11,7 +11,8 @@ import (
 // X: x-coordinate of the Point.
 // Y: y-coordinate of the Point.
 type Point struct {
-	X, Y float64
+	X float64 `json:"x"`
+	Y float64 `json:"y"`
 }
 
 // CrossCount represents data returned from CrossingCounts method
@@ -19,8 +20,8 @@ type Point struct {
 // Side: Side of the field the line is on
 // Count: The count on which the line is crossed
 type CrossCount struct {
-	Line  string
-	Count float64
+	Line  string  `json:"line"`
+	Count float64 `json:"count"`
 }
 
 // CrossCounts is an array of CrossCount objects with a special sorting

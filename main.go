@@ -10,7 +10,7 @@ import (
 func main() {
 	// dotbook, err := models.NewDotbook("Colts 2015 1-13", models.MakeNCAAFootball(8, 5))
 	// if err != nil {
-	// 	os.Exit(1)
+	// 	panic(err)
 	// }
 	// dotbook.AddDot("1", 0, 8, "1.5 I A40", "2.5 B FSL", false)
 	// dotbook.AddDot("2", 32, 0, "3.75 O A35", "13 F FH", false)
@@ -32,7 +32,7 @@ func main() {
 
 	// dotbook2, err := models.NewDotbook("Colts 2015 1-13 2", models.MakeNCAAFootball(8, 5))
 	// if err != nil {
-	// 	os.Exit(1)
+	// 	panic(err)
 	// }
 	// dotbook2.AddDot("1", 0, 8, "1.5 I A40", "2.5 B FSL", false)
 	// dotbook2.AddDot("2", 32, 0, "3.75 O A35", "13 F FH", false)
@@ -55,8 +55,15 @@ func main() {
 	db.InitDB()
 
 	defer db.CloseDB()
-	// db.PersistDotbook(dotbook)
-	// db.PersistDotbook(dotbook2)
+
+	// err = db.CreateDotbook(dotbook)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// err = db.CreateDotbook(dotbook2)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	log.Printf("Found %v dotbooks", len(db.GetAllDotbooks()))
 

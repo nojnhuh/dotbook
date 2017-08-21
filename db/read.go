@@ -23,13 +23,13 @@ func GetAllDotbooks() []*models.Dotbook {
 
 // GetDotbook retrieves a dotbook from the database by name and returns a
 // pointer to it.
-func GetDotbook(name string) *models.Dotbook {
+func GetDotbook(id string) *models.Dotbook {
 	db := models.Dotbook{}
 	c := session.DB("dotbook").C("dotbooks")
-	err := c.Find(bson.M{"name": name}).One(&db)
+	err := c.FindId(bson.ObjectIdHex(id)).One(&db)
 	if err != nil {
 		if err == mgo.ErrNotFound {
-			log.Println(name, "not found. Try again.")
+			log.Println(id, "not found.")
 			return nil
 		}
 		log.Fatal(err)

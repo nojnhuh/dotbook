@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 
+	"gopkg.in/mgo.v2/bson"
+
 	"github.com/nojnhuh/dotbook/models/dotmath"
 )
 
@@ -12,9 +14,10 @@ import (
 // Dots: The ordered collection of dots.
 // Field: The field layout for this dotbook. NCAA/HS football field, etc.
 type Dotbook struct {
-	Name  string
-	Dots  []*Dot
-	Field *FieldLayout
+	ID    bson.ObjectId `json:"id" bson:"_id,omitempty"`
+	Name  string        `json:"name"`
+	Dots  []*Dot        `json:"dots"`
+	Field *FieldLayout  `json:"field"`
 }
 
 // NewDotbook creates a new Dotbook with no dots and returns a reference to it.
@@ -25,7 +28,7 @@ func NewDotbook(name string, field *FieldLayout) (*Dotbook, error) {
 	if len(name) == 0 {
 		return nil, fmt.Errorf("Dotbook name cannot be empty")
 	}
-	return &Dotbook{name, []*Dot{}, field}, nil
+	return &Dotbook{ID: bson.NewObjectId(), Name: name, Dots: []*Dot{}, Field: field}, nil
 }
 
 // AddDot creates a new dot from the arguments and adds it to the end of this
@@ -53,12 +56,12 @@ func (db *Dotbook) AddDot(name string, moveCounts, holdCounts float64,
 		return err
 	}
 	db.Dots = append(db.Dots, &Dot{
-		name,
-		moveCounts,
-		holdCounts,
-		dotmath.NewPoint(xCoord, yCoord),
-		bodyCenter,
-		prevDot,
+		Name:       name,
+		MoveCounts: moveCounts,
+		HoldCounts: holdCounts,
+		Point:      dotmath.NewPoint(xCoord, yCoord),
+		BodyCenter: bodyCenter,
+		PrevDot:    prevDot,
 	})
 	return nil
 }
