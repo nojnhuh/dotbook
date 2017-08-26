@@ -32,7 +32,7 @@ func InitServer(port, securePort int) {
 	log.Printf("Ready to serve HTTPS on port %d.", securePort)
 	// path := fmt.Sprintf(":%d", port)
 	securePath := fmt.Sprintf(":%d", securePort)
-	certPath := "server.cert"
+	certPath := "server.crt"
 	keyPath := "server.key"
 	// log.Fatal(http.ListenAndServe(path, handlers.LoggingHandler(os.Stdout, r)))
 	// go http.ListenAndServe(path, http.HandlerFunc(redirect))

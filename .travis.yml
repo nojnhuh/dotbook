@@ -6,8 +6,7 @@ env:
   - DOCKER_COMPOSE_VERSION=1.14.0
 before_install:
 - set -e
-- openssl aes-256-cbc -K $encrypted_75458f4a10ed_key -iv $encrypted_75458f4a10ed_iv
-  -in tls.tar.enc -out tls.tar -d
+- openssl aes-256-cbc -K $encrypted_75458f4a10ed_key -iv $encrypted_75458f4a10ed_iv -in tls.tar.enc -out tls.tar -d
 - tar xvf tls.tar
 - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu
@@ -23,8 +22,8 @@ before_install:
 - docker --version
 - docker-compose --version
 script:
-- docker-compose up --build -d
-- docker exec dotbook_api_1 go test -v ./...
+- docker-compose build --build-arg RUN_TESTS=1 api
+- docker-compose up -d
 after_script:
 - docker-compose down
 notifications:
