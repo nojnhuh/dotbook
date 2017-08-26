@@ -10,6 +10,7 @@ import (
 
 // Dot represents one full coordinate
 type Dot struct {
+	// Database ID
 	ID bson.ObjectId `json:"id" bson:"_id,omitempty"`
 
 	// Set number, like "7" or "123A"
@@ -63,6 +64,20 @@ type DotDetails struct {
 	CrossingCounts dotmath.CrossCounts `json:"crossingCounts"`
 }
 
+// NewDot returns a reference to a new Dot object
+func NewDot(name string, moveCounts, holdCounts float64,
+	xdot, ydot float64, bodyCenter bool, prevDot *Dot) *Dot {
+	return &Dot{
+		ID:         bson.NewObjectId(),
+		Name:       name,
+		MoveCounts: moveCounts,
+		HoldCounts: holdCounts,
+		Point:      dotmath.NewPoint(xdot, ydot),
+		BodyCenter: bodyCenter,
+		PrevDot:    prevDot,
+	}
+}
+
 // equals tests two Dots for equality
 func (d *Dot) equals(d2 *Dot) bool {
 	if d == nil && d2 == nil {
@@ -106,8 +121,7 @@ func (d *Dot) DotOnCount(count float64) (*Dot, error) {
 	dFoot := d.BodyToFootDot()
 	prevFoot := d.PrevDot.BodyToFootDot()
 	midPoint := dotmath.ScalarMult(dotmath.AddPoints(dFoot.Point, prevFoot.Point), t)
-	mid := &Dot{Name: d.Name, MoveCounts: count, HoldCounts: 0, Point: midPoint, BodyCenter: false, PrevDot: d}
-	return mid, nil
+	return NewDot(d.Name, count, 0, midPoint.X, midPoint.Y, false, d), nil
 }
 
 // Distance calculates the number of steps between this dot and the previous one.

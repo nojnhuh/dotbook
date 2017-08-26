@@ -5,8 +5,6 @@ import (
 	"log"
 
 	"gopkg.in/mgo.v2/bson"
-
-	"github.com/nojnhuh/dotbook/models/dotmath"
 )
 
 // Dotbook represents a performer's dotbook for one show.
@@ -55,14 +53,7 @@ func (db *Dotbook) AddDot(name string, moveCounts, holdCounts float64,
 		log.Printf("Error creating coordinate from '%s'.\n", ydot)
 		return err
 	}
-	db.Dots = append(db.Dots, &Dot{
-		Name:       name,
-		MoveCounts: moveCounts,
-		HoldCounts: holdCounts,
-		Point:      dotmath.NewPoint(xCoord, yCoord),
-		BodyCenter: bodyCenter,
-		PrevDot:    prevDot,
-	})
+	db.Dots = append(db.Dots, NewDot(name, moveCounts, holdCounts, xCoord, yCoord, bodyCenter, prevDot))
 	return nil
 }
 
