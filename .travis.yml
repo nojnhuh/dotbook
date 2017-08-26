@@ -27,7 +27,7 @@ script:
 after_script:
 - docker-compose down
 - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-- docker tag dotbook_api_1 nojnhuh/dotbook-api:latest
+- docker tag dotbook_api:latest nojnhuh/dotbook-api:latest
 - docker push nojnhuh/dotbook-api:latest
 notifications:
   email:
