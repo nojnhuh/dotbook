@@ -26,7 +26,7 @@ before_install:
 
 script:
   - docker-compose up --build -d
-  - docker exec dotbook_app_1 go test -v ./...
+  - docker exec dotbook_api_1 go test -v ./...
 
 after_script:
   - docker-compose down

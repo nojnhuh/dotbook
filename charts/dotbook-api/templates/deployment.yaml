@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+          - name: DB_DB_HOST
+            value: "{{ .Values.database.hostname }}"
+          - name: DB_DB_PORT
+            value: "{{ .Values.database.port }}"
+        ports:
+        - containerPort: {{ .Values.service.ports.https.internalPort }}
+        livenessProbe:
+          httpGet:
+            path: /token
+            port: {{ .Values.service.ports.https.internalPort }}
+            scheme: HTTPS
+        readinessProbe:
+          httpGet:
+            path: /token
+            port: {{ .Values.service.ports.https.internalPort }}
+            scheme: HTTPS
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
