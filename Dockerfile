@@ -1,5 +1,5 @@
 # Build stage
-FROM golang:1.8-alpine AS build-env
+FROM golang:1.9-alpine AS build-env
 
 ARG RUN_TESTS
 
