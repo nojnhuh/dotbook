@@ -5,8 +5,9 @@ env:
   - DOCKER_VERSION=17.06.0~ce-0~ubuntu
   - DOCKER_COMPOSE_VERSION=1.14.0
 before_install:
+- openssl aes-256-cbc -K $encrypted_92b3f22fea64_key -iv $encrypted_92b3f22fea64_iv
+  -in tls.tar.enc -out tls.tar -d
 - set -e
-- openssl aes-256-cbc -K $encrypted_c5a96596572b_key -iv $encrypted_c5a96596572b_iv -in tls.tar.enc -out tls.tar -d
 - tar xvf tls.tar
 - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu
