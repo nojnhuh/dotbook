@@ -4,10 +4,11 @@ env:
   global:
   - DOCKER_VERSION=17.07.0~ce-0~ubuntu
   - DOCKER_COMPOSE_VERSION=1.14.0
+  - IMAGE_NAME=nojnhuh/dotbook-api
+  - IMAGE_TAG=$TRAVIS_BRANCH-$TRAVIS_COMMIT
 before_install:
 - openssl aes-256-cbc -K $encrypted_92b3f22fea64_key -iv $encrypted_92b3f22fea64_iv
   -in tls.tar.enc -out tls.tar -d
-- set -e
 - tar xvf tls.tar
 - travisci/install_docker.sh
 script:
@@ -16,8 +17,10 @@ script:
 after_script:
 - docker-compose down
 - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-- docker tag dotbook_api:latest nojnhuh/dotbook-api:latest
-- docker push nojnhuh/dotbook-api:latest
+# - docker tag dotbook_api:latest $IMAGE_NAME:$IMAGE_TAG
+- docker tag dotbook_api:latest $IMAGE_NAME:latest
+# - docker push $IMAGE_NAME:$IMAGE_TAG
+- docker push $IMAGE_NAME:latest
 notifications:
   email:
     on_success: never
