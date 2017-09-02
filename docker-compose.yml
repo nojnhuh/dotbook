@@ -6,8 +6,7 @@ services:
     links:
       - db:database
     ports:
-      - "80:80"
-      - "443:443"
+      - "80:5050"
     environment:
       - DB_DB_HOST=database
       - DB_DB_PORT=27017

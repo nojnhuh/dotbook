@@ -1,0 +1,9 @@
+## nginx configuration
+## Ref: https://github.com/kubernetes/ingress/blob/master/controllers/nginx/configuration.md
+##
+controller:
+  service:
+    type: NodePort
+    nodePorts:
+      http: 32080
+      https: 32443

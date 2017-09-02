@@ -7,9 +7,6 @@ env:
   - IMAGE_NAME=nojnhuh/dotbook-api
   - IMAGE_TAG=$TRAVIS_BRANCH-$TRAVIS_COMMIT
 before_install:
-- openssl aes-256-cbc -K $encrypted_92b3f22fea64_key -iv $encrypted_92b3f22fea64_iv
-  -in tls.tar.enc -out tls.tar -d
-- tar xvf tls.tar
 - travisci/install_docker.sh
 script:
 - docker-compose build --build-arg RUN_TESTS=1 api

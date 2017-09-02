@@ -26,15 +26,9 @@ func setPaths() {
 }
 
 // InitServer starts the web serve and declares handler functions
-func InitServer(port, securePort int) {
+func InitServer(port int) {
 	setPaths()
-	// log.Printf("Ready to serve HTTP on port %d.", port)
-	log.Printf("Ready to serve HTTPS on port %d.", securePort)
-	// path := fmt.Sprintf(":%d", port)
-	securePath := fmt.Sprintf(":%d", securePort)
-	certPath := "server.crt"
-	keyPath := "server.key"
-	// log.Fatal(http.ListenAndServe(path, handlers.LoggingHandler(os.Stdout, r)))
-	// go http.ListenAndServe(path, http.HandlerFunc(redirect))
-	log.Fatal(http.ListenAndServeTLS(securePath, certPath, keyPath, handlers.LoggingHandler(os.Stdout, r)))
+	log.Printf("Ready to serve HTTP on port %d.", port)
+	path := fmt.Sprintf(":%d", port)
+	log.Fatal(http.ListenAndServe(path, handlers.LoggingHandler(os.Stdout, r)))
 }

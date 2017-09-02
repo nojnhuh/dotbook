@@ -71,5 +71,5 @@ func main() {
 		log.Println("Created 2 dotbooks")
 	}
 
-	web.InitServer(80, 443)
+	web.InitServer(5050)
 }

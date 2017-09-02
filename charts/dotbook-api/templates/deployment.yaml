@@ -21,16 +21,15 @@ spec:
           - name: DB_DB_PORT
             value: "{{ .Values.database.port }}"
         ports:
-        - containerPort: {{ .Values.service.ports.https.internalPort }}
+        - name: http
+          containerPort: {{ .Values.service.ports.http.internalPort }}
         livenessProbe:
           httpGet:
             path: /token
-            port: {{ .Values.service.ports.https.internalPort }}
-            scheme: HTTPS
+            port: http
         readinessProbe:
           httpGet:
             path: /token
-            port: {{ .Values.service.ports.https.internalPort }}
-            scheme: HTTPS
+            port: http
         resources:
 {{ toYaml .Values.resources | indent 10 }}

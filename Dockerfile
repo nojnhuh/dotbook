@@ -17,7 +17,6 @@ ENTRYPOINT dotbook
 # Final stage
 FROM alpine
 
-EXPOSE 443
-COPY --from=build-env /go/src/github.com/nojnhuh/dotbook/server.* /
+EXPOSE 5050
 COPY --from=build-env /go/bin/dotbook /
 ENTRYPOINT /dotbook
