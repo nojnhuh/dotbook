@@ -12,19 +12,6 @@ import (
 	"github.com/nojnhuh/dotbook/models"
 )
 
-// // Pulled from https://gist.github.com/d-schmidt/587ceec34ce1334a5e60
-// func redirect(w http.ResponseWriter, req *http.Request) {
-// 	// remove/add not default ports from req.Host
-// 	target := "https://" + req.Host + req.URL.Path
-// 	if len(req.URL.RawQuery) > 0 {
-// 		target += "?" + req.URL.RawQuery
-// 	}
-// 	log.Printf("redirect to: %s", target)
-// 	http.Redirect(w, req, target,
-// 		// see @andreiavrammsd comment: often 307 > 301
-// 		http.StatusTemporaryRedirect)
-// }
-
 var dotbookHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json")
 	switch r.Method {

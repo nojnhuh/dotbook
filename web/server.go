@@ -1,4 +1,4 @@
-// Package web conatins the web server
+// Package web contains the web server
 package web
 
 import (
