@@ -8,11 +8,12 @@ services:
     ports:
       - "80:5050"
     environment:
-      - DB_DB_HOST=database
-      - DB_DB_PORT=5432
+      DB_DB_HOST: database
+      DB_DB_USER: ${DB_USER}
+      DB_DB_PASSWORD: ${DB_PASSWORD}
   database:
     image: "postgres:10.4"
     restart: always
     environment:
-      POSTGRES_USER: dotbook
-      POSTGRES_PASSWORD: pgpass
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}

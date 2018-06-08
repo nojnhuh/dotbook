@@ -1,5 +1,6 @@
 /dotbook
 /.dbdata/
+.env
 
 /server.*
 
