@@ -3,8 +3,6 @@ package models
 import (
 	"fmt"
 	"log"
-
-	"gopkg.in/mgo.v2/bson"
 )
 
 // Dotbook represents a performer's dotbook for one show.
@@ -12,10 +10,9 @@ import (
 // Dots: The ordered collection of dots.
 // Field: The field layout for this dotbook. NCAA/HS football field, etc.
 type Dotbook struct {
-	ID    bson.ObjectId `json:"id" bson:"_id,omitempty"`
-	Name  string        `json:"name"`
-	Dots  []*Dot        `json:"dots"`
-	Field *FieldLayout  `json:"field"`
+	Name  string       `json:"name"`
+	Dots  []*Dot       `json:"dots"`
+	Field *FieldLayout `json:"field"`
 }
 
 // NewDotbook creates a new Dotbook with no dots and returns a reference to it.
@@ -26,7 +23,7 @@ func NewDotbook(name string, field *FieldLayout) (*Dotbook, error) {
 	if len(name) == 0 {
 		return nil, fmt.Errorf("Dotbook name cannot be empty")
 	}
-	return &Dotbook{ID: bson.NewObjectId(), Name: name, Dots: []*Dot{}, Field: field}, nil
+	return &Dotbook{Name: name, Dots: []*Dot{}, Field: field}, nil
 }
 
 // AddDot creates a new dot from the arguments and adds it to the end of this

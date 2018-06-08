@@ -3,32 +3,46 @@
 package db
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
+	"time"
 
-	"gopkg.in/mgo.v2"
+	// database/sql driver
+	_ "github.com/lib/pq"
 )
 
 // session is a global variable that persists for the duration of the open
 // connection. The app should only need one open connection at a time.
-var session *mgo.Session
+var db *sql.DB
 
 // InitDB will open the app's connection to the database.
 func InitDB() {
 	var err error
+	dbUser := "dotbook"
+	dbPassword := "pgpass"
+	dbName := dbUser
 	dbHostname := os.Getenv("DB_DB_HOST")
 	dbPort := os.Getenv("DB_DB_PORT")
-	dbPath := fmt.Sprintf("%s:%s", dbHostname, dbPort)
-	session, err = mgo.Dial(dbPath)
+	connStr := fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%s sslmode=disable", dbUser, dbPassword, dbName, dbHostname, dbPort)
+	db, err = sql.Open("postgres", connStr)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
-	log.Println("Connected to database at", dbPath)
+
+	for {
+		err = db.Ping()
+		if err == nil {
+			break
+		}
+		time.Sleep(100 * time.Millisecond)
+	}
+	log.Printf("Connected to database %s at %s:%s\n", dbName, dbHostname, dbPort)
 }
 
 // CloseDB closes the app's connection with the database.
 func CloseDB() {
 	log.Println("Closing DB connection")
-	session.Close()
+	db.Close()
 }

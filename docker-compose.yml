@@ -3,14 +3,16 @@ services:
   api:
     build:
       context: .
-    links:
-      - db:database
+    depends_on:
+      - database
     ports:
       - "80:5050"
     environment:
       - DB_DB_HOST=database
-      - DB_DB_PORT=27017
-  db:
-    image: "mongo:3.6"
-    volumes:
-      - ./.dbdata:/data/db
+      - DB_DB_PORT=5432
+  database:
+    image: "postgres:10.4"
+    restart: always
+    environment:
+      POSTGRES_USER: dotbook
+      POSTGRES_PASSWORD: pgpass

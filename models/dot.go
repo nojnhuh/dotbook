@@ -3,16 +3,11 @@ package models
 import (
 	"fmt"
 
-	"gopkg.in/mgo.v2/bson"
-
 	"github.com/nojnhuh/dotbook/models/dotmath"
 )
 
 // Dot represents one full coordinate
 type Dot struct {
-	// Database ID
-	ID bson.ObjectId `json:"id" bson:"_id,omitempty"`
-
 	// Set number, like "7" or "123A"
 	Name string `json:"name"`
 
@@ -68,7 +63,6 @@ type DotDetails struct {
 func NewDot(name string, moveCounts, holdCounts float64,
 	xdot, ydot float64, bodyCenter bool, prevDot *Dot) *Dot {
 	return &Dot{
-		ID:         bson.NewObjectId(),
 		Name:       name,
 		MoveCounts: moveCounts,
 		HoldCounts: holdCounts,
