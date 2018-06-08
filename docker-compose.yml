@@ -1,7 +1,7 @@
 version: '3'
 services:
   api:
-    build: 
+    build:
       context: .
     links:
       - db:database
@@ -11,6 +11,6 @@ services:
       - DB_DB_HOST=database
       - DB_DB_PORT=27017
   db:
-    image: "mongo:3.4"
+    image: "mongo:3.6"
     volumes:
       - ./.dbdata:/data/db

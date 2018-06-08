@@ -2,8 +2,8 @@ services:
 - docker
 env:
   global:
-  - DOCKER_VERSION=17.07.0~ce-0~ubuntu
-  - DOCKER_COMPOSE_VERSION=1.14.0
+  - DOCKER_VERSION=18.05.0~ce~3-0~ubuntu
+  - DOCKER_COMPOSE_VERSION=1.21.2
   - IMAGE_NAME=nojnhuh/dotbook-api
   - IMAGE_TAG=$TRAVIS_BRANCH-$TRAVIS_COMMIT
 before_install:
