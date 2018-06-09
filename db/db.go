@@ -24,7 +24,7 @@ func InitDB() {
 	dbHostname := os.Getenv("DB_DB_HOST")
 	dbName := dbUser
 	connStr := fmt.Sprintf("user=%s password=%s dbname=%s host=%s sslmode=disable", dbUser, dbPassword, dbName, dbHostname)
-
+	log.Println("Conn:", connStr)
 	var err error
 	db, err = sql.Open("postgres", connStr)
 	if err != nil {
@@ -101,6 +101,23 @@ func GetAllDotbooks() []*models.Dotbook {
 	return dbs
 }
 
+// GetDotbook retrieves a Dotbook object from the database via its id
+func GetDotbook(id int) *models.Dotbook {
+	var name string
+	err := db.QueryRow(`SELECT * FROM dotbooks WHERE id = $1`, id).Scan(&name)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return &models.Dotbook{Name: name}
+}
+
+// DotbookExists returns a bool indicating whether or not a Dotbook with the
+// given name is in the database
+func DotbookExists(name string) bool {
+	err := db.QueryRow(`SELECT * FROM dotbooks WHERE name = $1`, name).Scan(nil)
+	return err != sql.ErrNoRows
+}
+
 // CreateDotbook inserts a Dotbook object in the database
 func CreateDotbook(dotbook *models.Dotbook) error {
 	newDotIDs := []int{}
@@ -115,6 +132,16 @@ func CreateDotbook(dotbook *models.Dotbook) error {
 	}
 
 	return err
+}
+
+// DeleteDotbook deletes a Dotbook from the database
+func DeleteDotbook(id int) error {
+	return nil
+}
+
+// UpdateDotbook deletes a Dotbook from the database
+func UpdateDotbook(id int, dotbook *models.Dotbook) error {
+	return nil
 }
 
 // CreateDot inserts a Dot object in the database

@@ -1,0 +1,4 @@
+imageTag: 10.4
+postgresUser: dotbook
+postgresPassword: pgpass
+postgresDatabase: dotbook

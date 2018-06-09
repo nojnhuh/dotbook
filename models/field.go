@@ -65,7 +65,7 @@ func makeFootball(stepsBetweenLines float64, yardsBetweenLines float64,
 	}
 }
 
-// MakeNCAAFootball creates a standard NCAA footabll field (DCI, TX high school
+// MakeNCAAFootball creates a standard NCAA football field (DCI, TX high school
 // standard)
 // Front hash: 60 feet from front sideline
 // Back hash: 100 feet from front sideline
@@ -84,7 +84,7 @@ func MakeNCAAFootball(stepsBetweenLines, yardsBetweenLines float64) *FieldLayout
 	return makeFootball(stepsBetweenLines, yardsBetweenLines, hashes)
 }
 
-// MakeHSFootball creates a standard high school footabll field.
+// MakeHSFootball creates a standard high school football field.
 // Front hash: 53'4" from front sideline.
 // Back hash: 106'8" from front sideline.
 //

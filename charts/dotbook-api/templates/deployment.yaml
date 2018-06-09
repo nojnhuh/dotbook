@@ -18,8 +18,10 @@ spec:
         env:
           - name: DB_DB_HOST
             value: "{{ .Values.database.hostname }}"
-          - name: DB_DB_PORT
-            value: "{{ .Values.database.port }}"
+          - name: DB_DB_USER
+            value: "{{ .Values.database.user }}"
+          - name: DB_DB_PASSWORD
+            value: "{{ .Values.database.password }}"
         ports:
         - name: http
           containerPort: {{ .Values.service.ports.http.internalPort }}

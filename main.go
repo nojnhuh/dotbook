@@ -5,7 +5,7 @@ import (
 
 	"github.com/nojnhuh/dotbook/db"
 	"github.com/nojnhuh/dotbook/models"
-	_ "github.com/nojnhuh/dotbook/web"
+	"github.com/nojnhuh/dotbook/web"
 )
 
 func main() {
@@ -74,5 +74,5 @@ func main() {
 		log.Printf("Found %v dotbooks", ndb)
 	}
 
-	// web.InitServer(5050)
+	web.InitServer(5050)
 }

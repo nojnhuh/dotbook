@@ -34,5 +34,6 @@ resources:
     cpu: 100m
     memory: 128Mi
 database:
-  hostname: mongodb-mongodb-replicaset.default
-  port: 27017
+  hostname: postgresql
+  user: dotbook
+  password: pgpass
