@@ -13,7 +13,6 @@ import (
 )
 
 var dotbookHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-type", "application/json")
 	id64, err := strconv.ParseInt(mux.Vars(r)["id"], 10, 0)
 	if err != nil {
 		log.Fatal(err)
@@ -22,6 +21,11 @@ var dotbookHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reques
 	switch r.Method {
 	case "GET":
 		book := db.GetDotbook(id)
+		if book == nil {
+			w.WriteHeader(http.StatusNotFound)
+			w.Write([]byte(http.StatusText(http.StatusNotFound)))
+			return
+		}
 		var dotDetails []*models.DotDetails
 		for _, d := range book.Dots {
 			dotDetails = append(dotDetails, d.GetDetails(book.Field))
@@ -30,6 +34,7 @@ var dotbookHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reques
 			Name string               `json:"name"`
 			Dots []*models.DotDetails `json:"dots"`
 		}{book.Name, dotDetails}
+		w.Header().Set("Content-type", "application/json")
 		json.NewEncoder(w).Encode(data)
 	case "DELETE":
 		err := db.DeleteDotbook(id)
@@ -64,7 +69,7 @@ var dotbookHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reques
 			if db.DotbookExists(t.Name) {
 				err = db.UpdateDotbook(id, book)
 			} else {
-				err = db.CreateDotbook(book)
+				db.CreateDotbook(book)
 			}
 			if err != nil {
 				panic(err)
@@ -76,9 +81,9 @@ var dotbookHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reques
 			Message string `json:"message"`
 			ID      int    `json:"id"`
 		}{"Success", id}
+		w.Header().Set("Content-type", "application/json")
 		json.NewEncoder(w).Encode(resp)
 	}
-
 })
 
 var dotHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -109,6 +114,7 @@ var dotHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		Message string `json:"message"`
 		ID      string `json:"_id"`
 	}{"Success", ""}
+	w.Header().Set("Content-type", "application/json")
 	json.NewEncoder(w).Encode(resp)
 })
 

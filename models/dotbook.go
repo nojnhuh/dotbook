@@ -10,6 +10,7 @@ import (
 // Dots: The ordered collection of dots.
 // Field: The field layout for this dotbook. NCAA/HS football field, etc.
 type Dotbook struct {
+	ID    int          `json:"id"`
 	Name  string       `json:"name"`
 	Dots  []*Dot       `json:"dots"`
 	Field *FieldLayout `json:"field"`

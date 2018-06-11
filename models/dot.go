@@ -90,16 +90,13 @@ func (d *Dot) equals(d2 *Dot) bool {
 
 // BodyToFootDot converts a foot dot to a body-center dot.
 func (d *Dot) BodyToFootDot() *Dot {
-	if d.BodyCenter {
-		dot := *d
-		if dot.PrevDot == nil {
-			return &dot
-		}
-		dot.Point = dotmath.BodyToFootDot(d.Point, d.PrevDot.Point, d.MoveCounts)
-		dot.BodyCenter = false
-		return &dot
+	if !d.BodyCenter || d.PrevDot == nil {
+		return d
 	}
-	return d
+	dot := *d
+	dot.Point = dotmath.BodyToFootDot(d.Point, d.PrevDot.Point, d.MoveCounts)
+	dot.BodyCenter = false
+	return &dot
 }
 
 // DotOnCount calculates an intermediate dot getting to the given dot based on
@@ -129,7 +126,7 @@ func (d *Dot) Distance() float64 {
 }
 
 // StepSize calculates the step size needed to get to the given dot in the form
-// of "x to 5" where x steps are needed to go 5 yards.
+// of "x to 5" where it takes x steps to go 5 yards.
 func (d *Dot) StepSize(f *FieldLayout) float64 {
 	if d.PrevDot == nil {
 		return 0
@@ -164,7 +161,6 @@ func (d *Dot) GetDetails(f *FieldLayout) *DotDetails {
 		HoldCounts:     d.HoldCounts,
 		Point:          d.Point,
 		BodyCenter:     d.BodyCenter,
-		Midset:         nil,
 		FootDot:        d.BodyToFootDot(),
 		StepSize:       d.StepSize(f),
 		CrossingCounts: d.CrossingCounts(f),

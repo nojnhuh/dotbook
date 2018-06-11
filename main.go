@@ -60,14 +60,8 @@ func main() {
 		dotbook2.AddDot("12", 8, 0, "3 O A50", "6 F FH", true)
 		dotbook2.AddDot("13", 8, 0, "3 O A50", "14.5 B FSL", false)
 
-		err = db.CreateDotbook(dotbook)
-		if err != nil {
-			log.Fatal(err)
-		}
-		err = db.CreateDotbook(dotbook2)
-		if err != nil {
-			log.Fatal(err)
-		}
+		db.CreateDotbook(dotbook)
+		db.CreateDotbook(dotbook2)
 
 		log.Println("Created 2 dotbooks")
 		ndb = len(db.GetAllDotbooks())
