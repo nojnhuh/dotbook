@@ -87,7 +87,7 @@ var dotbookHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reques
 })
 
 var dotHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-	id64, err := strconv.ParseInt(mux.Vars(r)["id"], 10, 0)
+	id64, err := strconv.ParseInt(mux.Vars(r)["db_id"], 10, 0)
 	if err != nil {
 		log.Fatal(err)
 	}

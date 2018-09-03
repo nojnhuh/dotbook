@@ -34,6 +34,22 @@ resources:
     cpu: 100m
     memory: 128Mi
 database:
-  hostname: postgresql
+  hostname: dotbook-api-postgresql
   user: dotbook
   password: pgpass
+
+nginx-ingress:
+  controller:
+    service:
+      type: NodePort
+      nodePorts:
+        http: 32080
+        https: 32443
+  rbac:
+    create: true
+
+postgresql:
+  imageTag: 10.4
+  postgresUser: dotbook
+  postgresPassword: pgpass
+  postgresDatabase: dotbook

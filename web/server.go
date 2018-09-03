@@ -20,7 +20,7 @@ func setPaths() {
 	r = mux.NewRouter()
 	r.Handle("/dotbooks", jwtMiddleware.Handler(indexHandler)).Methods("GET")
 	r.Handle("/dotbooks/{id}", jwtMiddleware.Handler(dotbookHandler)).Methods("GET", "POST", "PUT", "DELETE")
-	r.Handle("/dotbooks/{db_id}/dots/{dot_id}", jwtMiddleware.Handler(dotHandler)).Methods("GET", "POST", "PUT", "DELETE")
+	r.Handle("/dotbooks/{db_id}/dots/{dot_name}", jwtMiddleware.Handler(dotHandler)).Methods("GET", "POST", "PUT", "DELETE")
 	r.Handle("/token", tokenHandler).Methods("GET")
 	http.Handle("/", r)
 }
