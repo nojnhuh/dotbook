@@ -1,0 +1,8 @@
+/.dbdata
+tls.tar*
+Dockerfile
+charts/
+.gitignore
+.travis.yml
+docker-compose.yml
+mongodb-values.yaml

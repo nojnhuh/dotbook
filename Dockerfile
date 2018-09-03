@@ -1,15 +1,25 @@
 # Build stage
-FROM golang:1.8-alpine AS build-env
+FROM golang:1.10 AS build-env
+
+ARG RUN_TESTS
+
+# Get dep
+RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 
 RUN mkdir -p /go/src/github.com/nojnhuh/dotbook
 WORKDIR /go/src/github.com/nojnhuh/dotbook
-ADD . .
-RUN apk add --no-cache git && go get -v
-RUN go install -v ./...
+
+COPY Gopkg.toml Gopkg.lock ./
+RUN dep ensure -vendor-only
+
+COPY . .
+RUN if [ ! -z "$RUN_TESTS" ]; then go test -v ./...; fi
+RUN CGO_ENABLED=0 go build -o /dotbook
+
 
 # Final stage
 FROM alpine
 
-COPY --from=build-env /go/bin/dotbook /
-EXPOSE 8080
+EXPOSE 5050
+COPY --from=build-env /dotbook /
 ENTRYPOINT /dotbook

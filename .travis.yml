@@ -1,44 +1,23 @@
-language: go
-
 services:
-  - docker
-
+- docker
 env:
   global:
-    - DOCKER_VERSION=17.06.0~ce-0~ubuntu
-    - DOCKER_COMPOSE_VERSION=1.14.0
-
-go:
-  - 1.x
-  - 1.8
-  - master
-
+  - DOCKER_VERSION=18.05.0~ce~3-0~ubuntu
+  - DOCKER_COMPOSE_VERSION=1.21.2
+  - IMAGE_NAME=nojnhuh/dotbook-api
+  - IMAGE_TAG=$TRAVIS_BRANCH-$TRAVIS_COMMIT
 before_install:
-
-  # Install new Docker
-  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-  - sudo apt-get update
-  - apt-cache showpkg docker-ce
-  - sudo apt-get -y install docker-ce=${DOCKER_VERSION}
-
-  # Update docker-compose
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-
-  # Check versions
-  - docker --version
-  - docker-compose --version
-
+- travisci/install_docker.sh
 script:
-  - go test -v ./...
-  - docker-compose build --no-cache
-
-after_success: ./travisci/after_success.sh
-
-
+- docker-compose build --build-arg RUN_TESTS=1 api
+- docker-compose up -d
+after_script:
+- docker-compose down
+- docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+# - docker tag dotbook_api:latest $IMAGE_NAME:$IMAGE_TAG
+- docker tag dotbook_api:latest $IMAGE_NAME:latest
+# - docker push $IMAGE_NAME:$IMAGE_TAG
+- docker push $IMAGE_NAME:latest
 notifications:
   email:
     on_success: never

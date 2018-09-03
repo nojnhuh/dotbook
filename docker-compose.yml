@@ -1,13 +1,19 @@
 version: '3'
 services:
-  app:
-    build: .
-    image: nojnhuh/dotbook
-    links:
-      - db:database
+  api:
+    build:
+      context: .
+    depends_on:
+      - database
     ports:
-      - "80:8080"
-  db:
-    image: "mongo"
-    # volumes:
-    #   - ./dbdata:/data/db
+      - "80:5050"
+    environment:
+      DB_DB_HOST: database
+      DB_DB_USER: ${DB_USER}
+      DB_DB_PASSWORD: ${DB_PASSWORD}
+  database:
+    image: "postgres:10.4"
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
